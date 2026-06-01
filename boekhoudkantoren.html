@@ -152,6 +152,8 @@
       .btn-ghost { display: none; }
       .btn-primary { font-size: 0.82rem !important; padding: 0.65rem 1.4rem !important; }
       .price-num { font-size: 2.2rem; }
+          .hamburger { display: flex !important; }
+      .nav-links { display: none !important; }
     }
     /* DROPDOWN */
     .has-dropdown { position: relative; }
@@ -207,9 +209,6 @@
       border-radius: 2px;
       transition: all 0.3s;
     }
-    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
     /* MOBILE MENU */
     .mobile-menu {
@@ -240,9 +239,75 @@
 
     @media (max-width: 768px) {
       .nav-links { display: none !important; }
-      .hamburger { display: flex; }
+          .hamburger { display: flex !important; }
+      .nav-links { display: none !important; }
     }
 
+
+    /* HAMBURGER OVERRIDE */
+    @media (max-width: 768px) {
+      nav {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+      }
+      .nav-links { display: none !important; }
+      .hamburger {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 5px !important;
+        background: none !important;
+        border: none !important;
+        cursor: pointer !important;
+        padding: 8px !important;
+        z-index: 300 !important;
+      }
+      .hamburger span {
+        display: block !important;
+        width: 26px !important;
+        height: 3px !important;
+        background: var(--bordeaux) !important;
+        border-radius: 2px !important;
+        transition: all 0.3s !important;
+      }
+          .hamburger { display: flex !important; }
+      .nav-links { display: none !important; }
+    }
+
+    /* ── DROPDOWN ── */
+    .has-dropdown { position: relative; }
+    .dropdown {
+      display: none; position: absolute; top: calc(100% + 0.5rem); left: 0;
+      background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+      box-shadow: 0 8px 24px rgba(105,23,63,0.12); min-width: 220px;
+      list-style: none; z-index: 200; overflow: hidden;
+    }
+    .dropdown::before { content:''; display:block; height:2px; background:linear-gradient(90deg,transparent,#ffde85,transparent); }
+    .dropdown li a { display:block; padding:0.7rem 1.2rem; color:var(--text)!important; font-size:0.9rem!important; font-weight:500!important; border-bottom:1px solid var(--border); transition:background 0.15s; }
+    .dropdown li:last-child a { border-bottom:none; }
+    .dropdown li a:hover { background:var(--off-white); color:var(--bordeaux)!important; }
+    .has-dropdown:hover .dropdown { display:block; }
+
+    /* ── HAMBURGER ── */
+    .hamburger { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:4px; }
+    .hamburger span { display:block; width:24px; height:2px; background:var(--bordeaux); border-radius:2px; transition:all 0.3s; }
+    .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity:0; }
+    .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+
+    /* ── MOBILE MENU ── */
+    .mobile-menu { display:none; flex-direction:column; background:#fff; border-bottom:1px solid var(--border); }
+    .mobile-menu.open { display:flex; }
+    .mobile-menu a { padding:0.9rem 6vw; text-decoration:none; color:var(--text); font-weight:600; font-size:1rem; border-bottom:1px solid var(--border); }
+    .mobile-menu a:hover { background:var(--off-white); }
+    .mobile-sub { background:var(--off-white); }
+    .mobile-sub a { color:var(--text-muted)!important; font-size:0.9rem!important; font-weight:500!important; padding-left:8vw!important; }
+
+    /* ── MOBILE OVERRIDES ── */
+    @media (max-width: 768px) {
+      .nav-links { display:none!important; }
+      .hamburger { display:flex!important; }
+    }
   </style>
 
 </head>
@@ -335,21 +400,21 @@
   <a href="index.html" class="logo">Klik-<span>Start</span></a>
   <p>© 2025 Klik-Start – Rigès De Witte · BTW BE XXXX.XXX.XXX</p>
 </footer>
+
+
 <script>
-  function toggleMenu() {
-    const menu = document.getElementById('mobileMenu');
-    const btn = document.querySelector('.hamburger');
-    menu.classList.toggle('open');
-    btn.classList.toggle('open');
-  }
-  // Close menu when a link is clicked
-  document.getElementById('mobileMenu').querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+  document.querySelector('.hamburger').classList.toggle('open');
+}
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('mobileMenu').querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', function() {
       document.getElementById('mobileMenu').classList.remove('open');
       document.querySelector('.hamburger').classList.remove('open');
     });
   });
+});
 </script>
-
 </body>
 </html>
