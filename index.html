@@ -15,11 +15,33 @@
       --sky: #4a90d9;
       --sky-dark: #2e6db4;
       --accent: #f0a500;
+      --gold: #F2D000;
       --text: #1a1f36;
       --text-muted: #5a6278;
       --border: #dde3f0;
       --radius: 14px;
       --shadow: 0 4px 24px rgba(74,144,217,0.10);
+    }
+
+    .gold-divider {
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #F2D000, transparent);
+      border: none;
+      margin: 0;
+    }
+
+    .audience-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .audience-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #F2D000, transparent);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -330,13 +352,13 @@
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
-      height: 4px;
-      background: var(--sky);
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #F2D000, transparent);
     }
 
     .service-card:hover { border-color: var(--sky); box-shadow: var(--shadow); }
     .service-card.featured { border-color: var(--accent); }
-    .service-card.featured::before { background: var(--accent); }
+    .service-card.featured::before { background: linear-gradient(90deg, transparent, #F2D000, transparent); }
 
     .service-badge {
       display: inline-block;
@@ -411,6 +433,7 @@
       font-size: 1.4rem;
       font-weight: 900;
       margin: 0 auto 1rem;
+      box-shadow: 0 0 0 3px rgba(242,208,0,0.35), 0 0 12px rgba(242,208,0,0.2);
     }
 
     .step h3 {
@@ -507,7 +530,7 @@
 
     .about-highlight {
       background: var(--light-blue);
-      border-left: 4px solid var(--sky);
+      border-left: 3px solid var(--gold);
       padding: 1rem 1.5rem;
       border-radius: 0 var(--radius) var(--radius) 0;
       font-style: italic;
@@ -659,6 +682,7 @@
   </div>
 </div>
 
+<hr class="gold-divider" />
 <!-- FOR WHO -->
 <section class="for-who" id="voor-wie">
   <div class="section-tag">Voor wie?</div>
@@ -688,6 +712,7 @@
   </div>
 </section>
 
+<hr class="gold-divider" />
 <!-- SERVICES -->
 <section id="diensten">
   <div class="section-tag">Wat ik doe</div>
@@ -738,6 +763,7 @@
   </div>
 </section>
 
+<hr class="gold-divider" />
 <!-- HOW IT WORKS -->
 <section class="how">
   <div class="section-tag">Hoe werkt het?</div>
@@ -762,6 +788,7 @@
   </div>
 </section>
 
+<hr class="gold-divider" />
 <!-- ABOUT -->
 <section id="wie">
   <div class="about-inner">
@@ -802,6 +829,7 @@
   </div>
 </section>
 
+<hr class="gold-divider" />
 <!-- CONTACT -->
 <section class="contact" id="contact">
   <div class="section-tag" style="color: rgba(255,255,255,0.7)">Hulp nodig?</div>
