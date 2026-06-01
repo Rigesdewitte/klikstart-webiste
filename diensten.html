@@ -555,7 +555,7 @@
     </button>
   </nav>
   <div id="mobileMenu" style="display:none; flex-direction:column; background:#fff; border-bottom:2px solid #f0e4c4; box-shadow:0 4px 16px rgba(105,23,63,0.12);">
-    <a href="diensten.html" onclick="toggleSub(event)" style="display:block; padding:0.9rem 6vw; text-align:center; border-bottom:1px solid #f0e4c4; text-decoration:none; color:#1a1f36; font-weight:600;">Diensten ▾</a>
+    <div style="display:flex; border-bottom:1px solid #f0e4c4;"><a href="diensten.html" onclick="closeMenu()" style="flex:1; padding:0.9rem 6vw; text-align:center; text-decoration:none; color:#1a1f36; font-weight:600;">Diensten</a><button onclick="toggleSub(event)" style="background:none; border:none; border-left:1px solid #f0e4c4; padding:0.9rem 1.2rem; cursor:pointer; color:#69173f; font-size:1rem;">▾</button></div>
     <div id="mobileSub" style="display:none; flex-direction:column; background:#fffaec;">
       <a href="it-hulp.html" onclick="closeMenu()" style="display:block; padding:0.75rem 6vw; text-align:center; border-bottom:1px solid #f0e4c4; text-decoration:none; color:#6b5c4e; font-size:0.9rem;">IT-hulp op maat</a>
       <a href="efacturatie.html" onclick="closeMenu()" style="display:block; padding:0.75rem 6vw; text-align:center; border-bottom:1px solid #f0e4c4; text-decoration:none; color:#6b5c4e; font-size:0.9rem;">E-facturatie</a>
