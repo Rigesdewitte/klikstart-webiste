@@ -10,23 +10,23 @@
   <style>
     :root {
       --white: #ffffff;
-      --off-white: #f7f8fc;
-      --light-blue: #e8f0fe;
-      --sky: #4a90d9;
-      --sky-dark: #2e6db4;
-      --accent: #f0a500;
-      --gold: #F2D000;
+      --off-white: #fffaec;
+      --light-blue: #fff4d6;
+      --sky: #69173f;
+      --sky-dark: #4f1030;
+      --accent: #ffde85;
+      --gold: #ffde85;
       --text: #1a1f36;
-      --text-muted: #5a6278;
-      --border: #dde3f0;
+      --text-muted: #6b5c4e;
+      --border: #f0e4c4;
       --radius: 14px;
-      --shadow: 0 4px 24px rgba(74,144,217,0.10);
+      --shadow: 0 4px 24px rgba(105,23,63,0.10);
     }
 
     .gold-divider {
       width: 100%;
       height: 2px;
-      background: linear-gradient(90deg, transparent, #F2D000, transparent);
+      background: linear-gradient(90deg, transparent, #ffde85, transparent);
       border: none;
       margin: 0;
     }
@@ -41,7 +41,7 @@
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 2px;
-      background: linear-gradient(90deg, transparent, #F2D000, transparent);
+      background: linear-gradient(90deg, transparent, #ffde85, transparent);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -120,7 +120,7 @@
     .hero-tag {
       display: inline-block;
       background: var(--accent);
-      color: var(--white);
+      color: var(--text);
       font-size: 0.78rem;
       font-weight: 700;
       letter-spacing: 1.5px;
@@ -216,7 +216,7 @@
     }
 
     .stat-box {
-      background: var(--off-white);
+      background: var(--light-blue);
       border-radius: 10px;
       padding: 1rem;
       text-align: center;
@@ -353,12 +353,12 @@
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 2px;
-      background: linear-gradient(90deg, transparent, #F2D000, transparent);
+      background: linear-gradient(90deg, transparent, #ffde85, transparent);
     }
 
     .service-card:hover { border-color: var(--sky); box-shadow: var(--shadow); }
     .service-card.featured { border-color: var(--accent); }
-    .service-card.featured::before { background: linear-gradient(90deg, transparent, #F2D000, transparent); }
+    .service-card.featured::before { background: linear-gradient(90deg, transparent, #ffde85, transparent); }
 
     .service-badge {
       display: inline-block;
@@ -433,7 +433,7 @@
       font-size: 1.4rem;
       font-weight: 900;
       margin: 0 auto 1rem;
-      box-shadow: 0 0 0 3px rgba(242,208,0,0.35), 0 0 12px rgba(242,208,0,0.2);
+      box-shadow: 0 0 0 3px rgba(255,222,133,0.5), 0 0 12px rgba(255,222,133,0.25);
     }
 
     .step h3 {
@@ -530,7 +530,7 @@
 
     .about-highlight {
       background: var(--light-blue);
-      border-left: 3px solid var(--gold);
+      border-left: 3px solid var(--accent);
       padding: 1rem 1.5rem;
       border-radius: 0 var(--radius) var(--radius) 0;
       font-style: italic;
@@ -598,7 +598,7 @@
       font-size: 0.85rem;
     }
 
-    footer .logo { color: white; }
+    footer .logo { color: white; font-family: 'Barlow', sans-serif; font-weight: 900; }
     footer .logo span { color: var(--accent); }
 
     /* MOBILE */
@@ -619,7 +619,7 @@
 
 <!-- NAV -->
 <nav>
-  <div class="logo">Klik<span>Start</span></div>
+  <div class="logo">Klik-<span>Start</span></div>
   <ul class="nav-links">
     <li><a href="diensten.html">Diensten</a></li>
     <li><a href="#wie">Wie ben ik?</a></li>
@@ -851,7 +851,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="logo">Klik<span>Start</span></div>
+  <div class="logo">Klik-<span>Start</span></div>
   <p>© 2025 KlikStart – Rigès De Witte · BTW BE XXXX.XXX.XXX</p>
   <p><a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none;">Privacybeleid</a></p>
 </footer>
