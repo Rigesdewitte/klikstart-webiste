@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diensten – KlikStart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Barlow:wght@700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --white: #ffffff;
+      --off-white: #f7f8fc;
+      --light-blue: #e8f0fe;
+      --sky: #4a90d9;
+      --sky-dark: #2e6db4;
+      --accent: #f0a500;
+      --gold: #F2D000;
+      --text: #1a1f36;
+      --text-muted: #5a6278;
+      --border: #dde3f0;
+      --radius: 14px;
+      --shadow: 0 4px 24px rgba(74,144,217,0.10);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 17px;
+    }
+
+    h1, h2, h3, h4 { font-family: 'Barlow', sans-serif; }
+
+    .gold-divider {
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #F2D000, transparent);
+      border: none;
+      margin: 0;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 6vw;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Barlow', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--sky);
+      text-decoration: none;
+    }
+
+    .logo span { color: var(--gold); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover, .nav-links a.active { color: var(--sky); }
+
+    .nav-cta {
+      background: var(--sky);
+      color: var(--white) !important;
+      padding: 0.55rem 1.3rem;
+      border-radius: 8px;
+      font-weight: 700 !important;
+    }
+
+    .nav-cta:hover { background: var(--sky-dark) !important; }
+
+    /* PAGE HERO */
+    .page-hero {
+      background: linear-gradient(135deg, var(--off-white) 0%, var(--light-blue) 100%);
+      padding: 4rem 6vw 3rem;
+      text-align: center;
+    }
+
+    .page-hero-tag {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--text);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 0.3rem 0.9rem;
+      border-radius: 20px;
+      margin-bottom: 1rem;
+    }
+
+    .page-hero h1 {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 900;
+      margin-bottom: 1rem;
+      line-height: 1.1;
+    }
+
+    .page-hero p {
+      color: var(--text-muted);
+      max-width: 560px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    /* SECTION */
+    section { padding: 5rem 6vw; }
+
+    .section-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--sky);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.1rem);
+      font-weight: 900;
+      margin-bottom: 0.8rem;
+      line-height: 1.15;
+    }
+
+    .section-sub {
+      color: var(--text-muted);
+      max-width: 580px;
+      margin-bottom: 3rem;
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    /* DIENST BLOK */
+    .dienst-blok {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+      padding: 4rem 6vw;
+    }
+
+    .dienst-blok.reverse { direction: rtl; }
+    .dienst-blok.reverse > * { direction: ltr; }
+
+    .dienst-blok.alt-bg {
+      background: var(--off-white);
+    }
+
+    .dienst-icon-wrap {
+      background: var(--light-blue);
+      border-radius: 20px;
+      padding: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .dienst-icon-wrap::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #F2D000, transparent);
+    }
+
+    .dienst-tag {
+      display: inline-block;
+      background: var(--light-blue);
+      color: var(--sky);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 0.25rem 0.8rem;
+      border-radius: 20px;
+      margin-bottom: 0.8rem;
+    }
+
+    .dienst-blok h2 {
+      font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+      font-weight: 900;
+      margin-bottom: 1rem;
+      line-height: 1.15;
+    }
+
+    .dienst-blok p {
+      color: var(--text-muted);
+      font-size: 0.97rem;
+      line-height: 1.75;
+      margin-bottom: 1.2rem;
+    }
+
+    .dienst-list {
+      list-style: none;
+      margin-bottom: 2rem;
+    }
+
+    .dienst-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.5rem 0;
+      font-size: 0.95rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .dienst-list li:last-child { border-bottom: none; }
+
+    .dienst-list li .check {
+      width: 22px;
+      height: 22px;
+      background: var(--sky);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.7rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .dienst-list li span { color: var(--text); line-height: 1.5; }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--sky);
+      color: var(--white);
+      padding: 0.85rem 2rem;
+      border-radius: var(--radius);
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      margin-right: 1rem;
+    }
+
+    .btn-primary:hover { background: var(--sky-dark); transform: translateY(-1px); }
+
+    .btn-ghost {
+      display: inline-block;
+      color: var(--sky);
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      border: 2px solid var(--sky);
+      padding: 0.83rem 1.6rem;
+      border-radius: var(--radius);
+      transition: all 0.2s;
+    }
+
+    .btn-ghost:hover { background: var(--sky); color: var(--white); }
+
+    /* FOR WHO MINI */
+    .voor-wie-sectie {
+      background: var(--off-white);
+      padding: 4rem 6vw;
+      text-align: center;
+    }
+
+    .voor-wie-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.2rem;
+      margin-top: 2.5rem;
+    }
+
+    .voor-wie-item {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .voor-wie-item::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #F2D000, transparent);
+    }
+
+    .voor-wie-item .icon { font-size: 1.8rem; margin-bottom: 0.7rem; }
+
+    .voor-wie-item h4 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      margin-bottom: 0.3rem;
+    }
+
+    .voor-wie-item p {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* CTA BANNER */
+    .cta-banner {
+      background: var(--sky);
+      padding: 4rem 6vw;
+      text-align: center;
+      color: white;
+    }
+
+    .cta-banner h2 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 900;
+      margin-bottom: 0.8rem;
+    }
+
+    .cta-banner p {
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 2rem;
+      font-size: 1rem;
+    }
+
+    .btn-white {
+      display: inline-block;
+      background: white;
+      color: var(--sky);
+      padding: 0.9rem 2.2rem;
+      border-radius: var(--radius);
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      margin-right: 1rem;
+      transition: transform 0.15s;
+    }
+
+    .btn-white:hover { transform: translateY(-2px); }
+
+    /* FOOTER */
+    footer {
+      background: var(--text);
+      color: rgba(255,255,255,0.6);
+      padding: 2rem 6vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.85rem;
+    }
+
+    footer .logo { color: white; font-size: 1.4rem; }
+    footer .logo span { color: var(--gold); }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      .dienst-blok { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 5vw; }
+      .dienst-blok.reverse { direction: ltr; }
+      .dienst-icon-wrap { padding: 2rem; font-size: 3.5rem; }
+      .nav-links { display: none; }
+      .btn-ghost { display: none; }
+      .btn-primary { font-size: 0.82rem !important; padding: 0.65rem 1.4rem !important; }
+      .voor-wie-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="logo">Klik<span>Start</span></a>
+  <ul class="nav-links">
+    <li><a href="diensten.html" class="active">Diensten</a></li>
+    <li><a href="index.html#wie">Wie ben ik?</a></li>
+    <li><a href="index.html#contact" class="nav-cta">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <span class="page-hero-tag">Wat ik voor u doe</span>
+  <h1>Mijn diensten</h1>
+  <p>Duidelijke hulp voor zelfstandigen die liever ondernemen dan prutsen met technologie. Geen vakjargon, geen ingewikkelde uitleg — gewoon iemand die het voor u regelt.</p>
+</div>
+
+<hr class="gold-divider" />
+
+<!-- DIENST 1: IT-HULP -->
+<div class="dienst-blok">
+  <div class="dienst-icon-wrap">🖥️</div>
+  <div>
+    <span class="dienst-tag">Meest gevraagd</span>
+    <h2>IT-hulp op maat</h2>
+    <p>Uw computer doet raar, de printer werkt niet meer, of u snapt een programma niet. Dat zijn problemen die uw werk stilleggen — en die u niet zelf hoeft op te lossen.</p>
+    <p>Ik kom ter plaatse of help op afstand. Ik leg alles rustig uit terwijl we het samen doen, zodat u er nadien ook zelf mee aan de slag kunt.</p>
+    <ul class="dienst-list">
+      <li><span class="check">✓</span><span>Computer, laptop of printer instellen of resetten</span></li>
+      <li><span class="check">✓</span><span>Software installeren, bijwerken en uitleggen</span></li>
+      <li><span class="check">✓</span><span>Problemen op afstand oplossen (geen bezoek nodig)</span></li>
+      <li><span class="check">✓</span><span>Telefoon en tablet klaarzetten voor professioneel gebruik</span></li>
+      <li><span class="check">✓</span><span>Wachtwoorden, accounts en instellingen in orde brengen</span></li>
+      <li><span class="check">✓</span><span>Uitleg op uw eigen tempo, zonder moeilijke woorden</span></li>
+    </ul>
+    <a href="index.html#contact" class="btn-primary">Contacteer mij</a>
+  </div>
+</div>
+
+<hr class="gold-divider" />
+
+<!-- DIENST 2: E-FACTURATIE -->
+<div class="dienst-blok reverse alt-bg">
+  <div class="dienst-icon-wrap">📋</div>
+  <div>
+    <span class="dienst-tag">Wettelijke verplichting</span>
+    <h2>E-facturatie & administratie</h2>
+    <p>Vanaf 2026 is elektronisch factureren verplicht voor alle Belgische btw-plichtigen. Veel zelfstandigen weten nog niet hoe ze dit moeten aanpakken — en dat is begrijpelijk.</p>
+    <p>Ik zorg dat uw facturatie volledig in orde is. Van de juiste software kiezen tot alles instellen en uitleggen. U hoeft er niet wakker van te liggen.</p>
+    <ul class="dienst-list">
+      <li><span class="check">✓</span><span>Juiste facturatiesoftware kiezen voor uw situatie</span></li>
+      <li><span class="check">✓</span><span>Peppol-registratie en activatie</span></li>
+      <li><span class="check">✓</span><span>Alles instellen en testen</span></li>
+      <li><span class="check">✓</span><span>Uitleg hoe u zelf facturen opmaakt en verstuurt</span></li>
+      <li><span class="check">✓</span><span>Klaar voor de wettelijke verplichting, zonder stress</span></li>
+    </ul>
+    <a href="index.html#contact" class="btn-primary">Contacteer mij</a>
+  </div>
+</div>
+
+<hr class="gold-divider" />
+
+<!-- DIENST 3: OPSTARTEN -->
+<div class="dienst-blok">
+  <div class="dienst-icon-wrap">🚀</div>
+  <div>
+    <span class="dienst-tag">Voor starters</span>
+    <h2>Opstarten als zelfstandige</h2>
+    <p>Als u net begint als zelfstandige, zijn er tientallen dingen die digitaal geregeld moeten worden. Welke software heeft u nodig? Hoe richt u uw computer in? Hoe werkt e-facturatie?</p>
+    <p>Ik begeleid u van nul tot volledig operationeel. Stap voor stap, zonder haast, zodat u zeker bent dat alles correct staat voor u begint.</p>
+    <ul class="dienst-list">
+      <li><span class="check">✓</span><span>Persoonlijke digitale checklist voor uw opstart</span></li>
+      <li><span class="check">✓</span><span>Computer, software en accounts klaarzetten</span></li>
+      <li><span class="check">✓</span><span>Facturatie instellen en uitleggen</span></li>
+      <li><span class="check">✓</span><span>Advies over de juiste tools voor uw sector</span></li>
+      <li><span class="check">✓</span><span>Begeleiding in de eerste weken na de opstart</span></li>
+    </ul>
+    <a href="index.html#contact" class="btn-primary">Contacteer mij</a>
+  </div>
+</div>
+
+<hr class="gold-divider" />
+
+<!-- DIENST 4: BOEKHOUDKANTOREN -->
+<div class="dienst-blok reverse alt-bg">
+  <div class="dienst-icon-wrap">📁</div>
+  <div>
+    <span class="dienst-tag">Voor professionals</span>
+    <h2>Voor boekhoudkantoren</h2>
+    <p>Met 10 jaar ervaring als dossierbeheerder ken ik de werking van een boekhoudkantoor van binnenuit. Ik werk discreet, zelfstandig en flexibel inzetbaar — wanneer u mij nodig heeft.</p>
+    <ul class="dienst-list">
+      <li><span class="check">✓</span><span>Dossiersbeheer van A tot Z</span></li>
+      <li><span class="check">✓</span><span>Personenbelasting opvolgen en verwerken</span></li>
+      <li><span class="check">✓</span><span>IT-coördinatie en intern aanspreekpunt</span></li>
+      <li><span class="check">✓</span><span>Peppol-aanspreekpunt voor kantoor en klanten</span></li>
+      <li><span class="check">✓</span><span>Onthaal en administratieve ondersteuning</span></li>
+      <li><span class="check">✓</span><span>Freelance beschikbaar, flexibele inzet</span></li>
+    </ul>
+    <a href="index.html#contact" class="btn-primary">Contacteer mij</a>
+  </div>
+</div>
+
+<hr class="gold-divider" />
+
+<!-- VOOR WIE -->
+<div class="voor-wie-sectie">
+  <div class="section-tag">Voor wie?</div>
+  <h2 class="section-title">KlikStart is er voor iedereen</h2>
+  <p style="color:var(--text-muted); max-width:520px; margin:0 auto; font-size:0.97rem; line-height:1.7;">Geen technische voorkennis nodig. Of u nu net begint of al jaren zelfstandig bent — als het digitale gedeelte u kopzorgen geeft, ben ik er voor u.</p>
+  <div class="voor-wie-grid">
+    <div class="voor-wie-item">
+      <div class="icon">👴</div>
+      <h4>Niet zo digitaal?</h4>
+      <p>Geen probleem. Ik leg alles rustig uit op uw eigen tempo.</p>
+    </div>
+    <div class="voor-wie-item">
+      <div class="icon">🚀</div>
+      <h4>Net opgestart?</h4>
+      <p>Ik zet alles voor u klaar van nul tot volledig operationeel.</p>
+    </div>
+    <div class="voor-wie-item">
+      <div class="icon">⏰</div>
+      <h4>Geen tijd te verliezen?</h4>
+      <p>Snel en correct geholpen, zodat u gewoon verder kunt werken.</p>
+    </div>
+    <div class="voor-wie-item">
+      <div class="icon">📋</div>
+      <h4>E-facturatie?</h4>
+      <p>Ik zorg dat alles klaarstaat voor de wettelijke verplichting.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="gold-divider" />
+
+<!-- CTA -->
+<div class="cta-banner">
+  <h2>Klaar om te starten?</h2>
+  <p>Bel of mail mij — geen vraag is te klein.</p>
+  <a href="tel:+32495688316" class="btn-white">📞 +32 495 68 83 16</a>
+  <a href="mailto:rigesdewitte@hotmail.com" class="btn-white" style="background:rgba(255,255,255,0.15); color:white; border:2px solid rgba(255,255,255,0.4); margin-top: 0.5rem;">✉️ Stuur een mail</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <a href="index.html" class="logo">Klik<span>Start</span></a>
+  <p>© 2025 KlikStart – Rigès De Witte · BTW BE XXXX.XXX.XXX</p>
+  <p><a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none;">Privacybeleid</a></p>
+</footer>
+
+</body>
+</html>
