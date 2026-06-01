@@ -44,17 +44,6 @@
     }
 
     /* NAV */
-    nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.2rem 6vw;
-      background: var(--white);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
 
     .logo {
       font-family: 'Barlow', sans-serif;
@@ -450,7 +439,7 @@
       border-bottom: 1px solid var(--border);
       padding: 0;
     }
-    .mobile-menu.open { display: flex; }
+    
     .mobile-menu a {
       padding: 0.9rem 6vw;
       text-decoration: none;
@@ -529,7 +518,7 @@
 
     /* ── MOBILE MENU ── */
     .mobile-menu { display:none; flex-direction:column; background:#fff; border-bottom:1px solid var(--border); }
-    .mobile-menu.open { display:flex; }
+    
     .mobile-menu a { padding:0.9rem 6vw; text-decoration:none; color:var(--text); font-weight:600; font-size:1rem; border-bottom:1px solid var(--border); text-align:center; display:block; }
     .mobile-menu a:hover { background:var(--off-white); }
     .mobile-sub { background:var(--off-white); display:none; }
@@ -545,36 +534,40 @@
 <body>
 
 <!-- NAV -->
-<nav>
-  <a href="index.html" class="logo">Klik-<span>Start</span></a>
-  <ul class="nav-links">
-    <li class="has-dropdown">
-      <a href="diensten.html">Diensten ▾</a>
-      <ul class="dropdown">
-        <li><a href="it-hulp.html">IT-hulp op maat</a></li>
-        <li><a href="efacturatie.html">E-facturatie</a></li>
-        <li><a href="opstarten.html">Opstarten als zelfstandige</a></li>
-        <li><a href="boekhoudkantoren.html">Voor boekhoudkantoren</a></li>
-      </ul>
-    </li>
-    <li><a href="index.html#wie">Wie ben ik?</a></li>
-    <li><a href="index.html#contact" class="nav-cta">Contact</a></li>
-  </ul>
-  <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
-<div class="mobile-menu" id="mobileMenu">
-  <a href="#" onclick="toggleSub(event)">Diensten ▾</a>
-  <div class="mobile-sub" id="mobileSub">
-    <a href="it-hulp.html">IT-hulp op maat</a>
-    <a href="efacturatie.html">E-facturatie</a>
-    <a href="opstarten.html">Opstarten als zelfstandige</a>
-    <a href="boekhoudkantoren.html">Voor boekhoudkantoren</a>
+<div style="position:fixed; top:0; left:0; right:0; z-index:9999;">
+  <nav style="display:flex; align-items:center; justify-content:space-between; padding:1rem 6vw; background:#fff; border-bottom:1px solid #f0e4c4;">
+    <a href="index.html" class="logo">Klik-<span>Start</span></a>
+    <ul class="nav-links">
+      <li class="has-dropdown">
+        <a href="diensten.html">Diensten ▾</a>
+        <ul class="dropdown">
+          <li><a href="it-hulp.html">IT-hulp op maat</a></li>
+          <li><a href="efacturatie.html">E-facturatie</a></li>
+          <li><a href="opstarten.html">Opstarten als zelfstandige</a></li>
+          <li><a href="boekhoudkantoren.html">Voor boekhoudkantoren</a></li>
+        </ul>
+      </li>
+      <li><a href="index.html#wie">Wie ben ik?</a></li>
+      <li><a href="index.html#contact" class="nav-cta">Contact</a></li>
+    </ul>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span id="hs1"></span><span id="hs2"></span><span id="hs3"></span>
+    </button>
+  </nav>
+  <div id="mobileMenu" style="display:none; flex-direction:column; background:#fff; border-bottom:2px solid #f0e4c4; box-shadow:0 4px 16px rgba(105,23,63,0.12);">
+    <a href="diensten.html" onclick="toggleSub(event)" style="display:block; padding:0.9rem 6vw; text-align:center; border-bottom:1px solid #f0e4c4; text-decoration:none; color:#1a1f36; font-weight:600;">Diensten ▾</a>
+    <div id="mobileSub" style="display:none; flex-direction:column; background:#fffaec;">
+      <a href="it-hulp.html" onclick="closeMenu()" style="display:block; padding:0.75rem 6vw; text-align:center; border-bottom:1px solid #f0e4c4; text-decoration:none; color:#6b5c4e; font-size:0.9rem;">IT-hulp op maat</a>
+      <a href="efacturatie.html" onclick="closeMenu()" style="display:block; padding:0.75rem 6vw; text-align:center; border-bottom:1px solid #f0e4c4; text-decoration:none; color:#6b5c4e; font-size:0.9rem;">E-facturatie</a>
+      <a href="opstarten.html" onclick="closeMenu()" style="display:block; padding:0.75rem 6vw; text-align:center; border-bottom:1px solid #f0e4c4; text-decoration:none; color:#6b5c4e; font-size:0.9rem;">Opstarten als zelfstandige</a>
+      <a href="boekhoudkantoren.html" onclick="closeMenu()" style="display:block; padding:0.75rem 6vw; text-align:center; border-bottom:1px solid #f0e4c4; text-decoration:none; color:#6b5c4e; font-size:0.9rem;">Voor boekhoudkantoren</a>
+    </div>
+    <a href="index.html#wie" onclick="closeMenu()" style="display:block; padding:0.9rem 6vw; text-align:center; border-bottom:1px solid #f0e4c4; text-decoration:none; color:#1a1f36; font-weight:600;">Wie ben ik?</a>
+    <a href="index.html#contact" onclick="closeMenu()" style="display:block; padding:0.9rem 6vw; text-align:center; text-decoration:none; color:#fff; font-weight:700; background:#69173f;">Contact</a>
   </div>
-  <a href="index.html#wie">Wie ben ik?</a>
-  <a href="index.html#contact">Contact</a>
 </div>
+<div style="height:62px;"></div>
+
 <!-- PAGE HERO -->
 <div class="page-hero">
   <span class="page-hero-tag">Wat ik voor u doe</span>
@@ -721,25 +714,34 @@
 
 
 
+
+
+
 <script>
 function toggleMenu() {
-  document.getElementById('mobileMenu').classList.toggle('open');
-  document.querySelector('.hamburger').classList.toggle('open');
+  var menu = document.getElementById('mobileMenu');
+  var open = menu.style.display === 'flex';
+  menu.style.display = open ? 'none' : 'flex';
+  menu.style.flexDirection = 'column';
+  document.getElementById('hs1').style.transform = open ? '' : 'translateY(7px) rotate(45deg)';
+  document.getElementById('hs2').style.opacity = open ? '1' : '0';
+  document.getElementById('hs3').style.transform = open ? '' : 'translateY(-7px) rotate(-45deg)';
+  if (open) document.getElementById('mobileSub').style.display = 'none';
 }
 function toggleSub(e) {
   e.preventDefault();
   var sub = document.getElementById('mobileSub');
-  sub.style.display = sub.style.display === 'flex' ? 'none' : 'flex';
+  var open = sub.style.display === 'flex';
+  sub.style.display = open ? 'none' : 'flex';
   sub.style.flexDirection = 'column';
 }
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('mobileMenu').querySelectorAll('a:not([onclick])').forEach(function(a) {
-    a.addEventListener('click', function() {
-      document.getElementById('mobileMenu').classList.remove('open');
-      document.querySelector('.hamburger').classList.remove('open');
-    });
-  });
-});
+function closeMenu() {
+  document.getElementById('mobileMenu').style.display = 'none';
+  document.getElementById('mobileSub').style.display = 'none';
+  document.getElementById('hs1').style.transform = '';
+  document.getElementById('hs2').style.opacity = '1';
+  document.getElementById('hs3').style.transform = '';
+}
 </script>
 </body>
 </html>
