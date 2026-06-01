@@ -666,7 +666,7 @@
       display: block;
       width: 24px;
       height: 2px;
-      background: var(--bordeaux);
+      background: #69173f;
       border-radius: 2px;
       transition: all 0.3s;
     }
@@ -727,7 +727,7 @@
         display: block !important;
         width: 26px !important;
         height: 3px !important;
-        background: var(--bordeaux) !important;
+        background: #69173f;
         border-radius: 2px !important;
         transition: all 0.3s !important;
       }
@@ -751,7 +751,7 @@
 
     /* ── HAMBURGER ── */
     .hamburger { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:4px; }
-    .hamburger span { display:block; width:24px; height:2px; background:var(--bordeaux); border-radius:2px; transition:all 0.3s; }
+    .hamburger span { display:block; width:24px; height:2px; background: #69173f; border-radius:2px; transition:all 0.3s; }
     .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
     .hamburger.open span:nth-child(2) { opacity:0; }
     .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
@@ -759,10 +759,10 @@
     /* ── MOBILE MENU ── */
     .mobile-menu { display:none; flex-direction:column; background:#fff; border-bottom:1px solid var(--border); }
     .mobile-menu.open { display:flex; }
-    .mobile-menu a { padding:0.9rem 6vw; text-decoration:none; color:var(--text); font-weight:600; font-size:1rem; border-bottom:1px solid var(--border); }
+    .mobile-menu a { padding:0.9rem 6vw; text-decoration:none; color:var(--text); font-weight:600; font-size:1rem; border-bottom:1px solid var(--border); text-align:center; display:block; }
     .mobile-menu a:hover { background:var(--off-white); }
-    .mobile-sub { background:var(--off-white); }
-    .mobile-sub a { color:var(--text-muted)!important; font-size:0.9rem!important; font-weight:500!important; padding-left:8vw!important; }
+    .mobile-sub { background:var(--off-white); display:none; }
+    .mobile-sub a { color:var(--text-muted)!important; font-size:0.9rem!important; font-weight:500!important; padding-left:0!important; text-align:center!important; }
 
     /* ── MOBILE OVERRIDES ── */
     @media (max-width: 768px) {
@@ -794,12 +794,12 @@
   </button>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
-  <a href="diensten.html">Diensten</a>
-  <div class="mobile-sub">
-    <a href="it-hulp.html">→ IT-hulp op maat</a>
-    <a href="efacturatie.html">→ E-facturatie</a>
-    <a href="opstarten.html">→ Opstarten als zelfstandige</a>
-    <a href="boekhoudkantoren.html">→ Voor boekhoudkantoren</a>
+  <a href="#" onclick="toggleSub(event)">Diensten ▾</a>
+  <div class="mobile-sub" id="mobileSub">
+    <a href="it-hulp.html">IT-hulp op maat</a>
+    <a href="efacturatie.html">E-facturatie</a>
+    <a href="opstarten.html">Opstarten als zelfstandige</a>
+    <a href="boekhoudkantoren.html">Voor boekhoudkantoren</a>
   </div>
   <a href="index.html#wie">Wie ben ik?</a>
   <a href="index.html#contact">Contact</a>
@@ -1034,13 +1034,20 @@
 
 
 
+
 <script>
 function toggleMenu() {
   document.getElementById('mobileMenu').classList.toggle('open');
   document.querySelector('.hamburger').classList.toggle('open');
 }
+function toggleSub(e) {
+  e.preventDefault();
+  var sub = document.getElementById('mobileSub');
+  sub.style.display = sub.style.display === 'flex' ? 'none' : 'flex';
+  sub.style.flexDirection = 'column';
+}
 document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('mobileMenu').querySelectorAll('a').forEach(function(a) {
+  document.getElementById('mobileMenu').querySelectorAll('a:not([onclick])').forEach(function(a) {
     a.addEventListener('click', function() {
       document.getElementById('mobileMenu').classList.remove('open');
       document.querySelector('.hamburger').classList.remove('open');
