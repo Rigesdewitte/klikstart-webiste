@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bedrijfsmatige Oppervlakte – Klik-Start</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Barlow:wght@700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+  <style>
+    :root {
+      --white: #ffffff;
+      --off-white: #fff4d6;
+      --sky: #69173f;
+      --sky-dark: #4f1030;
+      --accent: #ffde85;
+      --gold: #ffde85;
+      --text: #1a1f36;
+      --text-muted: #6b5c4e;
+      --border: #f0e4c4;
+      --radius: 14px;
+      --shadow: 0 4px 24px rgba(105,23,63,0.10);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #faf8f5;
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 16px;
+      min-height: 100vh;
+    }
+
+    h1, h2, h3, .logo {
+      font-family: 'Barlow', sans-serif;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--sky);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+
+    .logo span { color: var(--accent); }
+
+    .nav-tag {
+      background: rgba(255,222,133,0.2);
+      color: var(--accent);
+      border: 1px solid rgba(255,222,133,0.4);
+      border-radius: 20px;
+      padding: 0.25rem 0.8rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    /* ── LOGIN ── */
+    #login-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 64px);
+      padding: 2rem;
+    }
+
+    .login-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+    }
+
+    .login-card .lock-icon {
+      width: 56px;
+      height: 56px;
+      background: var(--off-white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.2rem;
+      font-size: 1.6rem;
+    }
+
+    .login-card h2 {
+      font-size: 1.5rem;
+      color: var(--sky);
+      margin-bottom: 0.4rem;
+    }
+
+    .login-card p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .login-card input[type="password"] {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+      margin-bottom: 1rem;
+    }
+
+    .login-card input[type="password"]:focus {
+      border-color: var(--sky);
+    }
+
+    .btn-primary {
+      background: var(--sky);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+      font-family: 'Barlow', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.2s;
+    }
+
+    .btn-primary:hover { background: var(--sky-dark); }
+
+    .login-error {
+      color: #c0392b;
+      font-size: 0.85rem;
+      margin-top: 0.6rem;
+      display: none;
+    }
+
+    /* ── MAIN TOOL ── */
+    #tool-screen { display: none; padding: 2rem; max-width: 1100px; margin: 0 auto; }
+
+    .tool-header {
+      margin-bottom: 2rem;
+    }
+
+    .tool-header h1 {
+      font-size: 1.8rem;
+      color: var(--sky);
+      margin-bottom: 0.3rem;
+    }
+
+    .tool-header p {
+      color: var(--text-muted);
+    }
+
+    .gold-bar {
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── FLOOR SECTIONS ── */
+    .floor-section {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+
+    .floor-header {
+      background: var(--sky);
+      color: #fff;
+      padding: 0.9rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: 'Barlow', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .floor-header .floor-icon { font-size: 1.1rem; }
+
+    /* ── TABLE ── */
+    .table-wrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+
+    thead th {
+      background: #f7f0e8;
+      color: var(--sky);
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700;
+      padding: 0.6rem 0.8rem;
+      text-align: center;
+      border-bottom: 2px solid var(--border);
+      white-space: nowrap;
+    }
+
+    thead th:first-child { text-align: left; }
+
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #fffaf3; }
+
+    tbody td {
+      padding: 0.5rem 0.6rem;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    tbody td:first-child { text-align: left; }
+
+    .room-name-input {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      font-weight: 500;
+      width: 130px;
+      padding: 2px 4px;
+      border-radius: 4px;
+      outline: none;
+    }
+
+    .room-name-input:focus {
+      background: #fff4d6;
+    }
+
+    input[type="number"] {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 6px;
+      width: 72px;
+      text-align: center;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="number"]:focus { border-color: var(--sky); }
+
+    .calc-val {
+      font-weight: 600;
+      color: var(--text-muted);
+      min-width: 70px;
+      display: inline-block;
+    }
+
+    /* totaalrij per verdieping */
+    .totaal-row td {
+      background: #fff4d6;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700;
+      color: var(--sky);
+      font-size: 0.85rem;
+      padding: 0.5rem 0.8rem;
+    }
+
+    /* ── EINDRESULTAAT ── */
+    .result-section {
+      background: var(--sky);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 1.8rem 2rem;
+      margin-top: 2rem;
+    }
+
+    .result-section h2 {
+      font-size: 1.3rem;
+      margin-bottom: 1.2rem;
+      color: var(--accent);
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .result-card {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,222,133,0.3);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+    }
+
+    .result-card .label {
+      font-size: 0.8rem;
+      opacity: 0.75;
+      margin-bottom: 0.3rem;
+    }
+
+    .result-card .value {
+      font-family: 'Barlow', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--accent);
+    }
+
+    .result-card .sub {
+      font-size: 0.78rem;
+      opacity: 0.7;
+      margin-top: 0.2rem;
+    }
+
+    .big-result {
+      background: rgba(255,222,133,0.15);
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      padding: 1.2rem 1.5rem;
+      text-align: center;
+    }
+
+    .big-result .pct-label {
+      font-size: 0.85rem;
+      opacity: 0.8;
+      margin-bottom: 0.3rem;
+    }
+
+    .big-result .pct-value {
+      font-family: 'Barlow', sans-serif;
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .big-result .pct-sub {
+      font-size: 0.8rem;
+      opacity: 0.7;
+      margin-top: 0.4rem;
+    }
+
+    /* ── KNOPPEN ── */
+    .actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      border: 1.5px solid rgba(255,255,255,0.4);
+      border-radius: 8px;
+      padding: 0.65rem 1.3rem;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-secondary:hover { background: rgba(255,255,255,0.25); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      padding: 2rem 1rem;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 600px) {
+      #tool-screen { padding: 1rem; }
+      input[type="number"] { width: 58px; }
+      .room-name-input { width: 100px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="logo">Klik<span>-</span>Start</a>
+  <span class="nav-tag">Beroepsmatige Oppervlakte</span>
+</nav>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="lock-icon">🔒</div>
+    <h2>Beveiligde Tool</h2>
+    <p>Voer het wachtwoord in om de berekeningstool te openen.</p>
+    <input type="password" id="pwd-input" placeholder="Wachtwoord" onkeydown="if(event.key==='Enter') checkLogin()" />
+    <button class="btn-primary" onclick="checkLogin()">Inloggen</button>
+    <p class="login-error" id="login-error">Ongeldig wachtwoord. Probeer opnieuw.</p>
+  </div>
+</div>
+
+<!-- TOOL SCREEN -->
+<div id="tool-screen">
+
+  <div class="tool-header">
+    <h1>Berekening Bedrijfsmatige Oppervlakte</h1>
+    <p>Bepaal het beroepsmatig percentage van een woning voor zelfstandigen (eenmanszaak).</p>
+  </div>
+  <div class="gold-bar"></div>
+
+  <!-- KELDER / GARAGE -->
+  <div class="floor-section">
+    <div class="floor-header">
+      <span class="floor-icon">🏗️</span> Kelder &amp; Garage
+    </div>
+    <div class="table-wrap">
+      <table id="tbl-kelder">
+        <thead>
+          <tr>
+            <th>Ruimte</th>
+            <th>Lengte (m)</th>
+            <th>Breedte (m)</th>
+            <th>Totaal (m²)</th>
+            <th>Afwerkingsgraad</th>
+            <th>Beroepsmatig gebruik</th>
+            <th>Totaal (afw. + beroep)</th>
+            <th>Totaal (afw. only)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-floor="kelder">
+            <td><input class="room-name-input" value="Garage" /></td>
+            <td><input type="number" class="len" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="wid" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val tot">0,00</span></td>
+            <td><input type="number" class="afw" min="0" max="1" step="0.05" value="0.5" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="ber" min="0" max="1" step="0.05" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val totN">0,00</span></td>
+            <td><span class="calc-val totP">0,00</span></td>
+          </tr>
+          <tr data-floor="kelder">
+            <td><input class="room-name-input" value="Kelder" /></td>
+            <td><input type="number" class="len" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="wid" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val tot">0,00</span></td>
+            <td><input type="number" class="afw" min="0" max="1" step="0.05" value="0.5" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="ber" min="0" max="1" step="0.05" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val totN">0,00</span></td>
+            <td><span class="calc-val totP">0,00</span></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="totaal-row">
+            <td colspan="3">Totaal Kelder &amp; Garage</td>
+            <td id="kelder-totH">0,00</td>
+            <td></td>
+            <td id="kelder-totLabel">—</td>
+            <td id="kelder-totN">0,00</td>
+            <td id="kelder-totP">0,00</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- GELIJKVLOERS -->
+  <div class="floor-section">
+    <div class="floor-header">
+      <span class="floor-icon">🏠</span> Gelijkvloers
+    </div>
+    <div class="table-wrap">
+      <table id="tbl-gelijkvloers">
+        <thead>
+          <tr>
+            <th>Ruimte</th>
+            <th>Lengte (m)</th>
+            <th>Breedte (m)</th>
+            <th>Totaal (m²)</th>
+            <th>Afwerkingsgraad</th>
+            <th>Beroepsmatig gebruik</th>
+            <th>Totaal (afw. + beroep)</th>
+            <th>Totaal (afw. only)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-floor="gelijkvloers">
+            <td><input class="room-name-input" value="Bureau" /></td>
+            <td><input type="number" class="len" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="wid" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val tot">0,00</span></td>
+            <td><input type="number" class="afw" min="0" max="1" step="0.05" value="1" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="ber" min="0" max="1" step="0.05" value="1" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val totN">0,00</span></td>
+            <td><span class="calc-val totP">0,00</span></td>
+          </tr>
+          <tr data-floor="gelijkvloers">
+            <td><input class="room-name-input" value="Inkom" /></td>
+            <td><input type="number" class="len" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="wid" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val tot">0,00</span></td>
+            <td><input type="number" class="afw" min="0" max="1" step="0.05" value="1" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="ber" min="0" max="1" step="0.05" value="0.3" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val totN">0,00</span></td>
+            <td><span class="calc-val totP">0,00</span></td>
+          </tr>
+          <tr data-floor="gelijkvloers">
+            <td><input class="room-name-input" value="WC" /></td>
+            <td><input type="number" class="len" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="wid" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val tot">0,00</span></td>
+            <td><input type="number" class="afw" min="0" max="1" step="0.05" value="1" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="ber" min="0" max="1" step="0.05" value="0.3" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val totN">0,00</span></td>
+            <td><span class="calc-val totP">0,00</span></td>
+          </tr>
+          <tr data-floor="gelijkvloers">
+            <td><input class="room-name-input" value="Woonkamer" /></td>
+            <td><input type="number" class="len" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="wid" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val tot">0,00</span></td>
+            <td><input type="number" class="afw" min="0" max="1" step="0.05" value="1" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="ber" min="0" max="1" step="0.05" value="0.5" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val totN">0,00</span></td>
+            <td><span class="calc-val totP">0,00</span></td>
+          </tr>
+          <tr data-floor="gelijkvloers">
+            <td><input class="room-name-input" value="Keuken" /></td>
+            <td><input type="number" class="len" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="wid" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val tot">0,00</span></td>
+            <td><input type="number" class="afw" min="0" max="1" step="0.05" value="1" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="ber" min="0" max="1" step="0.05" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val totN">0,00</span></td>
+            <td><span class="calc-val totP">0,00</span></td>
+          </tr>
+          <tr data-floor="gelijkvloers">
+            <td><input class="room-name-input" value="Hall" /></td>
+            <td><input type="number" class="len" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="wid" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val tot">0,00</span></td>
+            <td><input type="number" class="afw" min="0" max="1" step="0.05" value="1" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="ber" min="0" max="1" step="0.05" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val totN">0,00</span></td>
+            <td><span class="calc-val totP">0,00</span></td>
+          </tr>
+          <tr data-floor="gelijkvloers">
+            <td><input class="room-name-input" value="Berging" /></td>
+            <td><input type="number" class="len" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="wid" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val tot">0,00</span></td>
+            <td><input type="number" class="afw" min="0" max="1" step="0.05" value="1" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="ber" min="0" max="1" step="0.05" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val totN">0,00</span></td>
+            <td><span class="calc-val totP">0,00</span></td>
+          </tr>
+          <tr data-floor="gelijkvloers">
+            <td><input class="room-name-input" value="Andere 1" /></td>
+            <td><input type="number" class="len" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="wid" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val tot">0,00</span></td>
+            <td><input type="number" class="afw" min="0" max="1" step="0.05" value="1" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="ber" min="0" max="1" step="0.05" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val totN">0,00</span></td>
+            <td><span class="calc-val totP">0,00</span></td>
+          </tr>
+          <tr data-floor="gelijkvloers">
+            <td><input class="room-name-input" value="Andere 2" /></td>
+            <td><input type="number" class="len" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="wid" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val tot">0,00</span></td>
+            <td><input type="number" class="afw" min="0" max="1" step="0.05" value="1" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="ber" min="0" max="1" step="0.05" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val totN">0,00</span></td>
+            <td><span class="calc-val totP">0,00</span></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="totaal-row">
+            <td colspan="3">Totaal Gelijkvloers</td>
+            <td id="gelijkvloers-totH">0,00</td>
+            <td></td>
+            <td id="gelijkvloers-totLabel">—</td>
+            <td id="gelijkvloers-totN">0,00</td>
+            <td id="gelijkvloers-totP">0,00</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- VERDIEPING -->
+  <div class="floor-section">
+    <div class="floor-header">
+      <span class="floor-icon">🏢</span> Verdieping
+    </div>
+    <div class="table-wrap">
+      <table id="tbl-verdieping">
+        <thead>
+          <tr>
+            <th>Ruimte</th>
+            <th>Lengte (m)</th>
+            <th>Breedte (m)</th>
+            <th>Totaal (m²)</th>
+            <th>Afwerkingsgraad</th>
+            <th>Beroepsmatig gebruik</th>
+            <th>Totaal (afw. + beroep)</th>
+            <th>Totaal (afw. only)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-floor="verdieping">
+            <td><input class="room-name-input" value="Slaapkamer 1" /></td>
+            <td><input type="number" class="len" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="wid" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val tot">0,00</span></td>
+            <td><input type="number" class="afw" min="0" max="1" step="0.05" value="1" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="ber" min="0" max="1" step="0.05" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val totN">0,00</span></td>
+            <td><span class="calc-val totP">0,00</span></td>
+          </tr>
+          <tr data-floor="verdieping">
+            <td><input class="room-name-input" value="Slaapkamer 2" /></td>
+            <td><input type="number" class="len" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="wid" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val tot">0,00</span></td>
+            <td><input type="number" class="afw" min="0" max="1" step="0.05" value="1" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="ber" min="0" max="1" step="0.05" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val totN">0,00</span></td>
+            <td><span class="calc-val totP">0,00</span></td>
+          </tr>
+          <tr data-floor="verdieping">
+            <td><input class="room-name-input" value="Slaapkamer 3" /></td>
+            <td><input type="number" class="len" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="wid" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val tot">0,00</span></td>
+            <td><input type="number" class="afw" min="0" max="1" step="0.05" value="1" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="ber" min="0" max="1" step="0.05" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val totN">0,00</span></td>
+            <td><span class="calc-val totP">0,00</span></td>
+          </tr>
+          <tr data-floor="verdieping">
+            <td><input class="room-name-input" value="Badkamer" /></td>
+            <td><input type="number" class="len" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="wid" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val tot">0,00</span></td>
+            <td><input type="number" class="afw" min="0" max="1" step="0.05" value="1" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="ber" min="0" max="1" step="0.05" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val totN">0,00</span></td>
+            <td><span class="calc-val totP">0,00</span></td>
+          </tr>
+          <tr data-floor="verdieping">
+            <td><input class="room-name-input" value="Hall" /></td>
+            <td><input type="number" class="len" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="wid" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val tot">0,00</span></td>
+            <td><input type="number" class="afw" min="0" max="1" step="0.05" value="1" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="ber" min="0" max="1" step="0.05" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val totN">0,00</span></td>
+            <td><span class="calc-val totP">0,00</span></td>
+          </tr>
+          <tr data-floor="verdieping">
+            <td><input class="room-name-input" value="Dressing" /></td>
+            <td><input type="number" class="len" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="wid" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val tot">0,00</span></td>
+            <td><input type="number" class="afw" min="0" max="1" step="0.05" value="1" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="ber" min="0" max="1" step="0.05" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val totN">0,00</span></td>
+            <td><span class="calc-val totP">0,00</span></td>
+          </tr>
+          <tr data-floor="verdieping">
+            <td><input class="room-name-input" value="Berging" /></td>
+            <td><input type="number" class="len" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="wid" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val tot">0,00</span></td>
+            <td><input type="number" class="afw" min="0" max="1" step="0.05" value="1" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="ber" min="0" max="1" step="0.05" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val totN">0,00</span></td>
+            <td><span class="calc-val totP">0,00</span></td>
+          </tr>
+          <tr data-floor="verdieping">
+            <td><input class="room-name-input" value="Andere" /></td>
+            <td><input type="number" class="len" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="wid" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val tot">0,00</span></td>
+            <td><input type="number" class="afw" min="0" max="1" step="0.05" value="1" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="ber" min="0" max="1" step="0.05" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val totN">0,00</span></td>
+            <td><span class="calc-val totP">0,00</span></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="totaal-row">
+            <td colspan="3">Totaal Verdieping</td>
+            <td id="verdieping-totH">0,00</td>
+            <td></td>
+            <td id="verdieping-totLabel">—</td>
+            <td id="verdieping-totN">0,00</td>
+            <td id="verdieping-totP">0,00</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- ZOLDER -->
+  <div class="floor-section">
+    <div class="floor-header">
+      <span class="floor-icon">🏚️</span> Zolder
+    </div>
+    <div class="table-wrap">
+      <table id="tbl-zolder">
+        <thead>
+          <tr>
+            <th>Ruimte</th>
+            <th>Lengte (m)</th>
+            <th>Breedte (m)</th>
+            <th>Totaal (m²)</th>
+            <th>Afwerkingsgraad</th>
+            <th>Beroepsmatig gebruik</th>
+            <th>Totaal (afw. + beroep)</th>
+            <th>Totaal (afw. only)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-floor="zolder">
+            <td><input class="room-name-input" value="Zolder" /></td>
+            <td><input type="number" class="len" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="wid" min="0" step="0.01" value="0" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val tot">0,00</span></td>
+            <td><input type="number" class="afw" min="0" max="1" step="0.05" value="0.2" oninput="recalcRow(this)" /></td>
+            <td><input type="number" class="ber" min="0" max="1" step="0.05" value="0.5" oninput="recalcRow(this)" /></td>
+            <td><span class="calc-val totN">0,00</span></td>
+            <td><span class="calc-val totP">0,00</span></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="totaal-row">
+            <td colspan="3">Totaal Zolder</td>
+            <td id="zolder-totH">0,00</td>
+            <td></td>
+            <td id="zolder-totLabel">—</td>
+            <td id="zolder-totN">0,00</td>
+            <td id="zolder-totP">0,00</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- EINDRESULTAAT -->
+  <div class="result-section">
+    <h2>Eindresultaat</h2>
+
+    <div class="result-grid">
+      <div class="result-card">
+        <div class="label">Kelder &amp; Garage</div>
+        <div class="value" id="res-kelder">0,0%</div>
+        <div class="sub">beroepsmatig aandeel</div>
+      </div>
+      <div class="result-card">
+        <div class="label">Gelijkvloers</div>
+        <div class="value" id="res-gelijkvloers">0,0%</div>
+        <div class="sub">beroepsmatig aandeel</div>
+      </div>
+      <div class="result-card">
+        <div class="label">Verdieping</div>
+        <div class="value" id="res-verdieping">0,0%</div>
+        <div class="sub">beroepsmatig aandeel</div>
+      </div>
+      <div class="result-card">
+        <div class="label">Zolder</div>
+        <div class="value" id="res-zolder">0,0%</div>
+        <div class="sub">beroepsmatig aandeel</div>
+      </div>
+    </div>
+
+    <div class="big-result">
+      <div class="pct-label">Totaal beroepsmatig percentage</div>
+      <div class="pct-value" id="res-totaal">0,0%</div>
+      <div class="pct-sub">= totaal afwerkingsgraad &amp; beroepsmatig ÷ totaal afwerkingsgraad × 100</div>
+    </div>
+
+    <div class="actions">
+      <button class="btn-secondary" onclick="window.print()">🖨️ Afdrukken</button>
+      <button class="btn-secondary" onclick="downloadPDF()">📄 Download PDF</button>
+      <button class="btn-secondary" onclick="resetForm()">↺ Alles wissen</button>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Klik-Start &nbsp;|&nbsp; Tool voor boekhoudkundig gebruik – berekening bedrijfsmatige oppervlakte
+  </footer>
+</div>
+
+<script>
+  // ── AUTH ──
+  const WACHTWOORD = 'Klik3nstart!';
+
+  window.addEventListener('DOMContentLoaded', () => {
+    if (sessionStorage.getItem('ks-auth') === '1') {
+      // Al ingelogd via dashboard
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('tool-screen').style.display = 'block';
+      recalcAll();
+    }
+  });
+
+  function checkLogin() {
+    const val = document.getElementById('pwd-input').value;
+    if (val === WACHTWOORD) {
+      sessionStorage.setItem('ks-auth', '1');
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('tool-screen').style.display = 'block';
+      recalcAll();
+    } else {
+      document.getElementById('login-error').style.display = 'block';
+    }
+  }
+
+  // ── FORMATTERING ──
+  function fmt(n) {
+    return n.toFixed(2).replace('.', ',');
+  }
+
+  function fmtPct(n) {
+    return n.toFixed(1).replace('.', ',') + '%';
+  }
+
+  // ── BEREKENING PER RIJ ──
+  function recalcRow(input) {
+    const row = input.closest('tr');
+    const len = parseFloat(row.querySelector('.len').value) || 0;
+    const wid = parseFloat(row.querySelector('.wid').value) || 0;
+    const afw = parseFloat(row.querySelector('.afw').value) || 0;
+    const ber = parseFloat(row.querySelector('.ber').value) || 0;
+
+    const tot  = len * wid;
+    const totN = tot * afw * ber;
+    const totP = tot * afw;
+
+    row.querySelector('.tot').textContent  = fmt(tot);
+    row.querySelector('.totN').textContent = fmt(totN);
+    row.querySelector('.totP').textContent = fmt(totP);
+
+    recalcFloor(row.closest('table'));
+    recalcEindtotaal();
+  }
+
+  // ── TOTAAL PER VERDIEPING ──
+  function recalcFloor(table) {
+    const rows = table.querySelectorAll('tbody tr');
+    let sumH = 0, sumN = 0, sumP = 0;
+    rows.forEach(r => {
+      sumH += parseFloat(r.querySelector('.len').value || 0) * parseFloat(r.querySelector('.wid').value || 0);
+      sumN += parseFloat(r.querySelector('.totN').textContent.replace(',', '.')) || 0;
+      sumP += parseFloat(r.querySelector('.totP').textContent.replace(',', '.')) || 0;
+    });
+
+    const id = table.id.replace('tbl-', '');
+    document.getElementById(id + '-totH').textContent = fmt(sumH);
+    document.getElementById(id + '-totN').textContent = fmt(sumN);
+    document.getElementById(id + '-totP').textContent = fmt(sumP);
+  }
+
+  // ── EINDTOTALEN ──
+  function recalcEindtotaal() {
+    const floors = ['kelder', 'gelijkvloers', 'verdieping', 'zolder'];
+    let grandN = 0, grandP = 0;
+
+    floors.forEach(f => {
+      const N = parseFloat(document.getElementById(f + '-totN').textContent.replace(',', '.')) || 0;
+      const P = parseFloat(document.getElementById(f + '-totP').textContent.replace(',', '.')) || 0;
+      grandN += N;
+      grandP += P;
+      const pct = P > 0 ? (N / P) * 100 : 0;
+      document.getElementById('res-' + f).textContent = fmtPct(pct);
+    });
+
+    const totaalPct = grandP > 0 ? (grandN / grandP) * 100 : 0;
+    document.getElementById('res-totaal').textContent = fmtPct(totaalPct);
+  }
+
+  // ── ALLES HERBEREKENEN ──
+  function recalcAll() {
+    document.querySelectorAll('input[type="number"].len').forEach(inp => recalcRow(inp));
+  }
+
+  // ── PDF DOWNLOAD ──
+  function downloadPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+
+    const SKY   = [105, 23, 63];
+    const GOLD  = [255, 222, 133];
+    const WHITE = [255, 255, 255];
+    const LIGHT = [247, 240, 232];
+    const TEXT  = [26, 31, 54];
+    const MUTED = [107, 92, 78];
+
+    const pw = 210, ph = 297, margin = 14;
+    let y = 0;
+
+    // Header balk
+    doc.setFillColor(...SKY);
+    doc.rect(0, 0, pw, 22, 'F');
+
+    // Gouden lijn onder header
+    doc.setFillColor(...GOLD);
+    doc.rect(0, 22, pw, 1.2, 'F');
+
+    // Logo tekst
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(16);
+    doc.setTextColor(...WHITE);
+    doc.text('Klik-Start', margin, 14);
+
+    // Tag rechts
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'normal');
+    doc.text('Beroepsmatige Oppervlakte', pw - margin, 14, { align: 'right' });
+
+    y = 32;
+
+    // Titel
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.setTextColor(...SKY);
+    doc.text('Berekening Bedrijfsmatige Oppervlakte', margin, y);
+    y += 5;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(...MUTED);
+    const now = new Date();
+    doc.text('Gegenereerd op ' + now.toLocaleDateString('nl-BE') + ' om ' + now.toLocaleTimeString('nl-BE', {hour:'2-digit',minute:'2-digit'}), margin, y);
+    y += 2;
+
+    // Gouden streep onder titel
+    doc.setFillColor(...GOLD);
+    doc.rect(margin, y, pw - margin * 2, 0.8, 'F');
+    y += 6;
+
+    // Verdiepingen
+    const floors = [
+      { id: 'kelder',       label: 'Kelder & Garage',  tableId: 'tbl-kelder' },
+      { id: 'gelijkvloers', label: 'Gelijkvloers',      tableId: 'tbl-gelijkvloers' },
+      { id: 'verdieping',   label: 'Verdieping',        tableId: 'tbl-verdieping' },
+      { id: 'zolder',       label: 'Zolder',            tableId: 'tbl-zolder' },
+    ];
+
+    floors.forEach(floor => {
+      const table = document.getElementById(floor.tableId);
+      const rows  = table.querySelectorAll('tbody tr');
+
+      // Verzamel rijdata — sla rijen met alle nullen over
+      const bodyRows = [];
+      rows.forEach(tr => {
+        const naam = tr.querySelector('.room-name-input').value || '';
+        const len  = parseFloat(tr.querySelector('.len').value) || 0;
+        const wid  = parseFloat(tr.querySelector('.wid').value) || 0;
+        const afw  = parseFloat(tr.querySelector('.afw').value) || 0;
+        const ber  = parseFloat(tr.querySelector('.ber').value) || 0;
+        const tot  = tr.querySelector('.tot').textContent;
+        const totN = tr.querySelector('.totN').textContent;
+        const totP = tr.querySelector('.totP').textContent;
+        if (len === 0 && wid === 0) return; // sla lege ruimtes over
+        bodyRows.push([naam, fmt(len), fmt(wid), tot, fmt(afw), fmt(ber), totN, totP]);
+      });
+
+      // Totaalrij
+      const totH = document.getElementById(floor.id + '-totH').textContent;
+      const totN = document.getElementById(floor.id + '-totN').textContent;
+      const totP = document.getElementById(floor.id + '-totP').textContent;
+
+      // Verdieping header
+      if (y > ph - 60) { doc.addPage(); y = 16; }
+
+      doc.setFillColor(...SKY);
+      doc.roundedRect(margin, y, pw - margin * 2, 7, 1.5, 1.5, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(...WHITE);
+      doc.text(floor.label, margin + 3, y + 4.8);
+      y += 9;
+
+      if (bodyRows.length === 0) {
+        doc.setFont('helvetica', 'italic');
+        doc.setFontSize(8);
+        doc.setTextColor(...MUTED);
+        doc.text('Geen ruimtes ingevuld.', margin + 2, y + 4);
+        y += 10;
+        return;
+      }
+
+      doc.autoTable({
+        startY: y,
+        margin: { left: margin, right: margin },
+        head: [['Ruimte', 'Lengte', 'Breedte', 'Totaal m²', 'Afw.graad', 'Beroeps.', 'Tot. (afw+ber)', 'Tot. (afw)']],
+        body: bodyRows,
+        foot: [['Totaal', '', '', totH, '', '', totN, totP]],
+        theme: 'plain',
+        styles: { font: 'helvetica', fontSize: 8, cellPadding: 2, textColor: TEXT },
+        headStyles: { fillColor: LIGHT, textColor: SKY, fontStyle: 'bold', fontSize: 7.5 },
+        footStyles: { fillColor: [255, 244, 214], textColor: SKY, fontStyle: 'bold', fontSize: 8 },
+        alternateRowStyles: { fillColor: [252, 249, 244] },
+        columnStyles: {
+          0: { cellWidth: 30 },
+          1: { halign: 'center' }, 2: { halign: 'center' },
+          3: { halign: 'center' }, 4: { halign: 'center' },
+          5: { halign: 'center' }, 6: { halign: 'center' },
+          7: { halign: 'center' },
+        },
+        didDrawPage: (data) => { y = data.cursor.y + 4; }
+      });
+
+      y = doc.lastAutoTable.finalY + 6;
+    });
+
+    // ── EINDRESULTAAT ──
+    if (y > ph - 55) { doc.addPage(); y = 16; }
+
+    // Bordeaux blok
+    doc.setFillColor(...SKY);
+    doc.roundedRect(margin, y, pw - margin * 2, 52, 2, 2, 'F');
+
+    // Gouden lijn bovenaan blok
+    doc.setFillColor(...GOLD);
+    doc.rect(margin + 4, y + 8, 30, 0.6, 'F');
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.setTextColor(...GOLD);
+    doc.text('Eindresultaat', margin + 4, y + 7);
+
+    // 4 kleine kaartjes
+    const cardW = (pw - margin * 2 - 12) / 4;
+    const floorLabels = ['Kelder & Garage', 'Gelijkvloers', 'Verdieping', 'Zolder'];
+    const floorIds    = ['kelder', 'gelijkvloers', 'verdieping', 'zolder'];
+
+    floorIds.forEach((fid, i) => {
+      const cx = margin + 4 + i * (cardW + 4);
+      const cy = y + 12;
+      doc.setFillColor(255, 255, 255, 0.12);
+      doc.setDrawColor(...GOLD);
+      doc.setLineWidth(0.3);
+      doc.roundedRect(cx, cy, cardW, 14, 1, 1, 'S');
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(6.5);
+      doc.setTextColor(255, 255, 255);
+      doc.text(floorLabels[i], cx + cardW / 2, cy + 4.5, { align: 'center' });
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.setTextColor(...GOLD);
+      doc.text(document.getElementById('res-' + fid).textContent, cx + cardW / 2, cy + 10.5, { align: 'center' });
+    });
+
+    // Groot totaal
+    const totaalPct = document.getElementById('res-totaal').textContent;
+    const bigY = y + 30;
+    doc.setDrawColor(...GOLD);
+    doc.setLineWidth(0.5);
+    doc.roundedRect(margin + 4, bigY, pw - margin * 2 - 8, 17, 2, 2, 'S');
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7.5);
+    doc.setTextColor(255, 255, 255);
+    doc.text('Totaal beroepsmatig percentage', pw / 2, bigY + 5.5, { align: 'center' });
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(20);
+    doc.setTextColor(...GOLD);
+    doc.text(totaalPct, pw / 2, bigY + 13, { align: 'center' });
+
+    y += 58;
+
+    // Footer
+    // Footer lijn
+    doc.setDrawColor(...GOLD);
+    doc.setLineWidth(0.4);
+    doc.line(margin, ph - 18, pw - margin, ph - 18);
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(8);
+    doc.setTextColor(...SKY);
+    doc.text('Rigès De Witte', pw / 2, ph - 13, { align: 'center' });
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7);
+    doc.setTextColor(...MUTED);
+    doc.text('www.klik-start.be  |  Tool voor boekhoudkundig gebruik  |  © ' + new Date().getFullYear() + ' Klik-Start', pw / 2, ph - 8, { align: 'center' });
+
+    doc.save('Bedrijfsmatige-Oppervlakte-' + now.toISOString().slice(0,10) + '.pdf');
+  }
+
+  // ── RESET ──
+  function resetForm() {
+    if (!confirm('Wil je alle waarden wissen?')) return;
+    document.querySelectorAll('input[type="number"].len, input[type="number"].wid').forEach(inp => {
+      inp.value = '0';
+    });
+    recalcAll();
+  }
+</script>
+
+</body>
+</html>
